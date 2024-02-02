@@ -5,6 +5,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+npx serve -l 9000 images
+
+
 npm run dev
 # or
 yarn dev
