@@ -15,43 +15,19 @@ import {
   import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
   import { Total } from "../../components/Total";
   import React from "react";
+  import { CartServiceFactory } from "../../services/cart.service";
+  import { ProductService } from "../../services/product.service";
+  import { removeItemFromCartAction } from "../../server-actions/cart.action";
   
-  const products = [
-    {
-      id: "1",
-      name: "Camisa",
-      description: "Camisa branca",
-      price: 100,
-      image_url: "https://source.unsplash.com/random?product",
-      category_id: "1",
-    },
-    {
-      id: "2",
-      name: "Calça",
-      description: "Calça jeans",
-      price: 100,
-      image_url: "https://source.unsplash.com/random?product",
-      category_id: "1",
-    },
-  ];
-  
-  const cart = {
-    items: [
-      {
-        product_id: "1",
-        quantity: 2,
-        total: 200,
-      },
-      {
-        product_id: "2",
-        quantity: 1,
-        total: 100,
-      },
-    ],
-    total: 1000,
-  };
+
   
   async function MyCartPage() {
+    const cart = CartServiceFactory.create().getCart();
+    const productService = new ProductService();
+    const products = await productService.getProductsByIds(
+      cart.items.map((item) => item.product_id)
+    );
+
     return (
       <Box sx={{ textAlign: "center" }}>
         <Typography variant="h3">
@@ -62,7 +38,7 @@ import {
             <List>
               {cart.items.map((item, key) => {
                 const product = products.find(
-                  (product) => product.id == item.product_id //usar ===
+                  (product) => product.id == item.product_id 
                 )!;
   
                 return (
@@ -97,7 +73,7 @@ import {
                     <ListItem
                       sx={{ display: "flex", justifyContent: "end", p: 0 }}
                     >
-                      <form>
+                      <form action={removeItemFromCartAction}>
                         <input type="hidden" name="index" value={key} />
                         <Button
                           color="error"
@@ -119,7 +95,7 @@ import {
               )}
             </List>
             <Box sx={{ display: "flex", justifyContent: "end" }}>
-              <Total total={cart.total} />
+              <Total total={!cart.items.length ? 0: cart.total} />
             </Box>
             <Box sx={{ display: "flex", justifyContent: "end", mt: 2 }}>
               {cart.items.length ? (
