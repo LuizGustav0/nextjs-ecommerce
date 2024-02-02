@@ -44,6 +44,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export function SearchBar() {
   const searchParams = useSearchParams();
+
+
   
   return (
     <Search>
@@ -55,6 +57,7 @@ export function SearchBar() {
           name="search"
           type="search"
           placeholder="Pesquisar…"
+          defaultValue={searchParams.get('search')}
         />
       </form>
     </Search>

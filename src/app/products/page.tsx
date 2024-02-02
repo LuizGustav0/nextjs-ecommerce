@@ -15,10 +15,14 @@ import { ProductService } from "../../services/product.service";
 
 
 
-  async function ListProductsPage() {
+async function ListProductsPage({
+  searchParams,
+}: {
+  searchParams: { search?: string; category_id?: string };
+}) {
 
-    const products = await new ProductService().getProducts();
-
+    const search = searchParams.search;
+    const products = await new ProductService().getProducts({search});
 
     return (
       <Grid2 container spacing={2}>
