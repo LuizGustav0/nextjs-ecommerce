@@ -3,11 +3,16 @@
 import { Box, Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import PaidIcon from "@mui/icons-material/Paid";
+import { checkoutAction } from "../../server-actions/checkout.action";
 
 export function CheckoutForm() {
   return (
     <Box
       component={'form'}
+      action={async (formData: FormData) => {        
+        formData.set("card_hash", "123"); //logica para gerar o card hash
+        await checkoutAction(formData);
+      }}
     >
       <Grid2 container spacing={3}>
         <Grid2 xs={12} md={6}>
@@ -18,7 +23,7 @@ export function CheckoutForm() {
             fullWidth
             autoComplete="cc-name"
             variant="standard"
-            defaultValue={"João da Silva"}
+            defaultValue={"TESTE TESTE"}
           />
         </Grid2>
         <Grid2 xs={12} md={6}>
@@ -40,7 +45,7 @@ export function CheckoutForm() {
             fullWidth
             autoComplete="cc-exp"
             variant="standard"
-            defaultValue={"12/2022"}
+            defaultValue={"12/2026"}
           />
         </Grid2>
         <Grid2 xs={12} md={6}>
